@@ -24,6 +24,7 @@
   --red: #dd092f;
   --red-dark: #b5072a;
   --red-line: #7d0519;
+  --pokeball-line: #1d2226;
   --yellow: #ffc200;
   --lens-light: #a0dbff;
   --lens: #27aafe;
@@ -777,14 +778,27 @@ button:focus-visible,
   to { transform: scale(1.35); opacity: 0; }
 }
 
+/* Ajuda: abre à direita, logo abaixo do botão "?" */
 .help-dialog {
+  inset: calc(84px + env(safe-area-inset-top, 0px)) 16px auto auto;
+  margin: 0;
   max-width: min(420px, calc(100vw - 32px));
+  max-height: calc(100dvh - 100px);
+  overflow-y: auto;
   padding: 20px 22px;
   border: 2px solid var(--ink);
   border-radius: 12px;
   background: var(--page);
   color: var(--ink);
   line-height: 1.5;
+}
+
+.help-dialog[open] {
+  animation: help-in .25s cubic-bezier(.2, .9, .3, 1);
+}
+
+@keyframes help-in {
+  from { transform: translateX(24px); opacity: 0; }
 }
 
 .help-dialog::backdrop {
@@ -844,7 +858,7 @@ button:focus-visible,
   margin: auto;
   padding: 0;
   overflow: hidden;
-  border: 3px solid var(--red-line);
+  border: 3px solid var(--pokeball-line);
   border-radius: 16px;
   background: var(--page);
   color: var(--ink);
@@ -866,14 +880,14 @@ button:focus-visible,
   from { transform: translate(-30vw, -30vh) scale(.1); opacity: 0; }
 }
 
-/* Cabeçalho vermelho, como o corpo da Pokédex */
+/* Cabeçalho vermelho com a faixa preta embaixo, como a Pokébola */
 .universe-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
   padding: 14px 18px;
-  border-bottom: 3px solid var(--red-line);
+  border-bottom: 3px solid var(--pokeball-line);
   background: var(--red);
   color: #fff;
 }
@@ -887,10 +901,10 @@ button:focus-visible,
   flex: none;
   width: 36px;
   height: 36px;
-  border: 2px solid var(--red-line);
+  border: 2px solid var(--pokeball-line);
   border-radius: 50%;
   background: #f4f4f4;
-  color: var(--red-line);
+  color: var(--pokeball-line);
   font: 600 16px/1 "Rubik", system-ui, sans-serif;
   cursor: pointer;
 }
@@ -1199,7 +1213,8 @@ button:focus-visible,
 
   .typing-pending,
   .typing-cursor,
-  .universe-dialog[open] {
+  .universe-dialog[open],
+  .help-dialog[open] {
     animation: none;
   }
 }
