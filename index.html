@@ -13,7 +13,7 @@
   <!-- Estilos da Pokédex -->
   <link rel="stylesheet" href="css/style.css">
 
-  <!-- Scripts: interface.js (abrir/fechar, zoom e ajuda) e pokedex.js (seu código com a PokeAPI) -->
+  <!-- Scripts: interface.js (abrir/fechar, zoom e ajuda) e pokedex.js (integração com a PokeAPI) -->
   <script src="js/interface.js" defer></script>
   <script src="js/pokedex.js" defer></script>
 </head>
@@ -54,7 +54,7 @@
           </svg>
 
           <!-- Lente azul (fecha a Pokédex quando aberta) -->
-          <div class="absolute lens" id="lens" role="button" tabindex="-1" aria-label="Fechar a Pokédex">
+          <div class="absolute lens" id="lens" role="button" tabindex="-1" aria-label="Fechar a Pokédex" title="Fechar a Pokédex">
             <div class="lens-glass"></div>
           </div>
 
@@ -85,19 +85,20 @@
             </div>
 
             <!-- Botões abaixo da tela -->
-            <button class="absolute btn round-btn" id="btn-round" aria-label="Botão redondo"></button>
-            <button class="absolute btn pill-btn pill-btn--red" id="btn-red" aria-label="Botão vermelho"></button>
-            <button class="absolute btn pill-btn pill-btn--blue" id="btn-blue" aria-label="Botão azul"></button>
+            <button class="absolute btn round-btn labeled" id="btn-round" aria-label="Tocar o grito" title="Tocar o grito" data-label="GRITO"></button>
+            <button class="absolute btn pill-btn pill-btn--red labeled" id="btn-red" aria-label="Versão fêmea" title="Versão fêmea" data-label="FÊMEA ♀"></button>
+            <button class="absolute btn pill-btn pill-btn--blue labeled" id="btn-blue" aria-label="Versão macho" title="Versão macho" data-label="MACHO ♂"></button>
 
             <!-- VISOR VERDE: mostre aqui o número do Pokémon -->
             <div class="absolute number-display" id="number-display">#000</div>
 
             <!-- Direcional (D-pad) -->
+            <p class="absolute dpad-caption" aria-hidden="true">▲▼ POKÉMON<br>◀▶ PÁGINA</p>
             <div class="absolute dpad">
-              <button class="dpad-btn dpad-btn--up" id="btn-up" aria-label="Cima"></button>
-              <button class="dpad-btn dpad-btn--down" id="btn-down" aria-label="Baixo"></button>
-              <button class="dpad-btn dpad-btn--left" id="btn-left" aria-label="Anterior"></button>
-              <button class="dpad-btn dpad-btn--right" id="btn-right" aria-label="Próximo"></button>
+              <button class="dpad-btn dpad-btn--up" id="btn-up" aria-label="Próximo Pokémon" title="Próximo Pokémon">▲</button>
+              <button class="dpad-btn dpad-btn--down" id="btn-down" aria-label="Pokémon anterior" title="Pokémon anterior">▼</button>
+              <button class="dpad-btn dpad-btn--left" id="btn-left" aria-label="Página anterior" title="Página anterior">◀</button>
+              <button class="dpad-btn dpad-btn--right" id="btn-right" aria-label="Próxima página" title="Próxima página">▶</button>
             </div>
 
           </div>
@@ -144,24 +145,25 @@
 
               <!-- Teclado azul (10 teclas) -->
               <div class="absolute keypad" id="keypad">
-                <button class="btn keypad-key" id="key-1" aria-label="Tecla 1"></button>
-                <button class="btn keypad-key" id="key-2" aria-label="Tecla 2"></button>
-                <button class="btn keypad-key" id="key-3" aria-label="Tecla 3"></button>
-                <button class="btn keypad-key" id="key-4" aria-label="Tecla 4"></button>
-                <button class="btn keypad-key" id="key-5" aria-label="Tecla 5"></button>
-                <button class="btn keypad-key" id="key-6" aria-label="Tecla 6"></button>
-                <button class="btn keypad-key" id="key-7" aria-label="Tecla 7"></button>
-                <button class="btn keypad-key" id="key-8" aria-label="Tecla 8"></button>
-                <button class="btn keypad-key" id="key-9" aria-label="Tecla 9"></button>
-                <button class="btn keypad-key" id="key-10" aria-label="Tecla 10"></button>
+                <button class="btn keypad-key" id="key-1" aria-label="Tecla 1"><span class="key-digit">1</span><span class="key-letters"></span></button>
+                <button class="btn keypad-key" id="key-2" aria-label="Tecla 2 abc"><span class="key-digit">2</span><span class="key-letters">abc</span></button>
+                <button class="btn keypad-key" id="key-3" aria-label="Tecla 3 def"><span class="key-digit">3</span><span class="key-letters">def</span></button>
+                <button class="btn keypad-key" id="key-4" aria-label="Tecla 4 ghi"><span class="key-digit">4</span><span class="key-letters">ghi</span></button>
+                <button class="btn keypad-key" id="key-5" aria-label="Tecla 5 jkl"><span class="key-digit">5</span><span class="key-letters">jkl</span></button>
+                <button class="btn keypad-key" id="key-6" aria-label="Tecla 6 mno"><span class="key-digit">6</span><span class="key-letters">mno</span></button>
+                <button class="btn keypad-key" id="key-7" aria-label="Tecla 7 pqrs"><span class="key-digit">7</span><span class="key-letters">pqrs</span></button>
+                <button class="btn keypad-key" id="key-8" aria-label="Tecla 8 tuv"><span class="key-digit">8</span><span class="key-letters">tuv</span></button>
+                <button class="btn keypad-key" id="key-9" aria-label="Tecla 9 wxyz"><span class="key-digit">9</span><span class="key-letters">wxyz</span></button>
+                <button class="btn keypad-key" id="key-10" aria-label="Tecla 0"><span class="key-digit">0</span><span class="key-letters"></span></button>
               </div>
 
               <!-- Teclas brancas, botões escuros e LED amarelo (clicável) -->
-              <button class="absolute btn white-key white-key--left" id="btn-white-left" aria-label="Tecla branca A"></button>
-              <button class="absolute btn white-key white-key--right" id="btn-white-right" aria-label="Tecla branca B"></button>
-              <button class="absolute btn dark-pill-btn dark-pill-btn--left" id="btn-dark-left" aria-label="Botão escuro A"></button>
-              <button class="absolute btn dark-pill-btn dark-pill-btn--right" id="btn-dark-right" aria-label="Botão escuro B"></button>
-              <button class="absolute lamp yellow-led" id="led-yellow" aria-label="LED amarelo (shiny)" aria-pressed="false"></button>
+              <button class="absolute btn white-key white-key--left" id="btn-white-left" aria-label="Buscar" title="Buscar">BUSCAR</button>
+              <button class="absolute btn white-key white-key--right" id="btn-white-right" aria-label="Apagar" title="Apagar">APAGAR</button>
+              <button class="absolute btn dark-pill-btn dark-pill-btn--left labeled" id="btn-dark-left" aria-label="Alternar letras e números" title="Alternar letras e números" data-label="ABC / 123"></button>
+              <button class="absolute btn dark-pill-btn dark-pill-btn--right labeled" id="btn-dark-right" aria-label="Hífen" title="Hífen" data-label="HÍFEN -"></button>
+              <button class="absolute lamp yellow-led" id="led-yellow" aria-label="Shiny" title="Shiny" aria-pressed="false"></button>
+              <span class="absolute led-caption" aria-hidden="true">SHINY</span>
 
               <!-- TELINHAS INFERIORES: use para informações curtas -->
               <div class="absolute small-display small-display--left" id="small-display-left">---</div>
@@ -188,7 +190,11 @@
       <li>Clique na Pokédex para abri-la.</li>
       <li>Clique na lente azul para fechá-la de novo.</li>
       <li>Role a rodinha do mouse sobre a Pokédex para aumentá-la ou diminuí-la.</li>
-      <!-- Adicione aqui novos passos conforme criar as funcionalidades -->
+      <li>Digite um nome nas teclas azuis como num celular antigo (aperte várias vezes para trocar a letra) e aperte BUSCAR.</li>
+      <li>ABC / 123 alterna entre letras e números; HÍFEN digita “-”; APAGAR apaga um caractere.</li>
+      <li>▲▼ trocam de Pokémon pelo número; ◀▶ trocam a página de informações.</li>
+      <li>FÊMEA, MACHO e SHINY mudam a imagem; GRITO toca o som do Pokémon.</li>
+      <li>As três luzes do topo mostram o estágio da evolução; todas acesas indicam uma evolução especial.</li>
     </ol>
     <button id="help-close">Entendi</button>
   </dialog>

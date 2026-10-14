@@ -756,11 +756,222 @@ button:focus-visible,
 
 
 /* ---------------------------------------------------------
-   13. ACESSIBILIDADE: desliga animações se o usuário preferir
+   13. RÓTULOS DOS BOTÕES
+   --------------------------------------------------------- */
+
+/* Texto acima do botão, vindo do atributo data-label */
+.labeled::after {
+  content: attr(data-label);
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + var(--unit) * .012);
+  transform: translateX(-50%);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.labeled::after,
+.dpad-caption,
+.led-caption {
+  color: #fff;
+  font: 600 calc(var(--unit) * .028)/1.15 "Rubik", system-ui, sans-serif;
+  text-shadow: 0 1px 0 rgb(0 0 0 / .35);
+}
+
+/* Legenda do direcional */
+.dpad-caption {
+  right: 0;
+  top: calc(var(--unit) * .675);
+  width: calc(var(--unit) * .26);
+  text-align: center;
+  pointer-events: none;
+}
+
+/* Legenda do LED amarelo */
+.led-caption {
+  left: calc(var(--unit) * .58);
+  top: calc(var(--unit) * (.645 + 2 * var(--gap)));
+  width: calc(var(--unit) * .2);
+  text-align: center;
+  pointer-events: none;
+}
+
+/* Setas do direcional */
+.dpad-btn {
+  display: grid;
+  place-items: center;
+  color: rgb(255 255 255 / .55);
+  font-size: calc(var(--unit) * .035);
+  line-height: 1;
+}
+
+/* Teclas azuis: número em cima, letras embaixo.
+   O modo ativo (classe no #keypad) fica em destaque. */
+.keypad-key {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--unit) * .004);
+  color: #fff;
+  font-family: "Rubik", system-ui, sans-serif;
+  line-height: 1;
+  text-shadow: 0 1px 0 rgb(0 0 0 / .3);
+}
+
+.key-digit   { font-size: calc(var(--unit) * .04); font-weight: 600; }
+.key-letters { font-size: calc(var(--unit) * .026); text-transform: uppercase; min-height: 1em; }
+
+.keypad.is-letters .key-digit,
+.keypad.is-numbers .key-letters {
+  opacity: .5;
+}
+
+/* Teclas brancas */
+.white-key {
+  color: #333;
+  font: 600 calc(var(--unit) * .024) "Rubik", system-ui, sans-serif;
+}
+
+/* Botões desativados durante a busca */
+.pokedex button:disabled {
+  cursor: progress;
+}
+
+
+/* ---------------------------------------------------------
+   14. LUZES: apagadas por padrão, acesas com .is-on
+   --------------------------------------------------------- */
+.led,
+.frame-dot,
+.power-led,
+.yellow-led {
+  filter: brightness(.35) saturate(.4);
+  transition: filter .15s, box-shadow .15s;
+}
+
+.led.is-on,
+.frame-dot.is-on,
+.power-led.is-on,
+.yellow-led.is-on {
+  filter: brightness(1.15);
+  box-shadow: 0 0 calc(var(--unit) * .02) calc(var(--unit) * .006) var(--color);
+}
+
+/* LED de energia piscando (erro ou versão inexistente) */
+.power-led.is-blinking {
+  animation: lamp-blink .22s steps(1) 4;
+}
+
+/* Pontos da moldura: alternados durante a busca, juntos quando termina */
+.screen-frame.is-searching .frame-dot--left  { animation: lamp-blink .5s steps(1) infinite; }
+.screen-frame.is-searching .frame-dot--right { animation: lamp-blink .5s steps(1) infinite reverse; }
+.screen-frame.is-ready .frame-dot            { animation: lamp-flash .35s 1; }
+
+@keyframes lamp-flash {
+  from, to { filter: brightness(1.15); box-shadow: 0 0 calc(var(--unit) * .02) calc(var(--unit) * .006) var(--color); }
+}
+
+@keyframes lamp-blink {
+  0%  { filter: brightness(1.15); box-shadow: 0 0 calc(var(--unit) * .02) calc(var(--unit) * .006) var(--color); }
+  50% { filter: brightness(.35) saturate(.4); box-shadow: none; }
+}
+
+
+/* ---------------------------------------------------------
+   15. CONTEÚDO DAS TELAS
+   --------------------------------------------------------- */
+
+/* Imagem do Pokémon em pixel art */
+.main-screen img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.main-screen.is-error {
+  color: #ff8a8a;
+  font-size: calc(var(--unit) * .06);
+}
+
+/* Tela de informações: cabeçalho + conteúdo */
+.info-screen {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--unit) * .006);
+}
+
+.info-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1ch;
+  flex: none;
+  color: #7fb58b;
+  font-size: calc(var(--unit) * .045);
+  line-height: 1;
+}
+
+.info-body {
+  flex: 1;
+  overflow-y: auto;
+  font-size: calc(var(--unit) * .046);
+  line-height: 1.05;
+  scrollbar-width: thin;
+  scrollbar-color: #4b5a4f transparent;
+}
+
+.info-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 2ch;
+}
+
+.info-stats span {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Digitação: letra pendente e cursor piscando */
+.typing-text {
+  font-size: calc(var(--unit) * .07);
+  word-break: break-all;
+}
+
+.typing-pending {
+  text-decoration: underline;
+  animation: text-blink .5s steps(1) infinite;
+}
+
+.typing-cursor {
+  animation: text-blink 1s steps(1) infinite;
+}
+
+@keyframes text-blink {
+  50% { opacity: 0; }
+}
+
+/* Telinhas: nomes longos não quebram a linha */
+.small-display {
+  padding: 0 calc(var(--unit) * .015);
+  font-size: calc(var(--unit) * .05);
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+
+/* ---------------------------------------------------------
+   16. ACESSIBILIDADE: desliga animações se o usuário preferir
    --------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
   .pokedex,
   .pokedex-cover {
     transition: none;
+  }
+
+  .typing-pending,
+  .typing-cursor {
+    animation: none;
   }
 }

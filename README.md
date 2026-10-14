@@ -1,4 +1,6 @@
-# Pokédex PokeAPI — Especificação de Comportamento
+# Pokédex PokeAPI — Demonstração
+
+Versão de demonstração, com o app funcionando e um rótulo em cada botão. O projeto original, em que o `js/pokedex.js` ainda está para ser feito, é o [pokedex-pokeapi](https://github.com/iagoot23/pokedex-pokeapi).
 
 13 out. 2026 · @Iago Teixeira Pereira
 
@@ -24,7 +26,7 @@ Esta especificação define o que cada botão, tela e lâmpada da Pokédex faz d
 | `index.html` | Todas as telas, botões e lâmpadas | Pronto |
 | `css/style.css` | A aparência | Pronto |
 | `js/interface.js` | Abrir/fechar, zoom com a rodinha do mouse, janela de ajuda | Pronto |
-| `js/pokedex.js` | Tudo o que esta especificação descreve | A fazer |
+| `js/pokedex.js` | Tudo o que esta especificação descreve | Pronto |
 
 Para rodar, abra o `index.html` no navegador; não há etapa de build. Os dois scripts já são carregados com `defer`. Conforme as funcionalidades forem criadas, adicione um passo para cada uma na janela de ajuda (`#help-dialog` no `index.html`).
 
@@ -136,7 +138,7 @@ Todo erro faz o `.power-led` piscar e mostra uma descrição curta em `#main-scr
 
 `#info-screen` mostra uma página de dados por vez, sempre começando pela descrição. `#btn-right` avança e `#btn-left` volta, em ciclo: depois da última página vem a primeira.
 
-1. Descrição (de `/pokemon-species/`, campo `flavor_text_entries`)
+1. Descrição (de `/pokemon-species/`, campo `flavor_text_entries`; a PokeAPI não tem descrições em português, então aparece a mais recente em inglês)
 2. Tipos
 3. Atributos: HP, Ataque, Defesa, Ataque Especial, Defesa Especial, Velocidade
 4. Habilidades
