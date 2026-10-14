@@ -129,14 +129,62 @@ async function getLastNumber() {
   return state.lastNumber;
 }
 
-// Espera a imagem carregar para mostrar tudo de uma vez
-function preloadImage(url) {
-  if (!url) return Promise.resolve();
+// Os sprites têm muita borda transparente e o Pokémon nem sempre fica no meio.
+// Recorta a imagem até o desenho, para ela ficar centralizada na tela.
+// Guarda o resultado de cada endereço, para trocar de versão sem esperar de novo.
+const spriteCache = new Map();
+
+function loadSprite(url) {
+  if (!url) return Promise.resolve(null);
+  if (!spriteCache.has(url)) spriteCache.set(url, trimSprite(url));
+  return spriteCache.get(url);
+}
+
+// Se não der para recortar (imagem quebrada ou sem permissão), usa a original
+function trimSprite(url) {
   return new Promise((resolve) => {
     const image = new Image();
-    image.onload = image.onerror = resolve;
+    image.crossOrigin = 'anonymous';
+    image.onload = () => {
+      try {
+        resolve(cropToContent(image) ?? url);
+      } catch {
+        resolve(url);
+      }
+    };
+    image.onerror = () => resolve(url);
     image.src = url;
   });
+}
+
+function cropToContent(image) {
+  const width = image.naturalWidth;
+  const height = image.naturalHeight;
+  const canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
+  const context = canvas.getContext('2d');
+  context.drawImage(image, 0, 0);
+  const pixels = context.getImageData(0, 0, width, height).data;
+
+  // Procura os limites dos pixels que não são transparentes
+  let left = width, top = height, right = -1, bottom = -1;
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      if (pixels[(y * width + x) * 4 + 3] === 0) continue;
+      left = Math.min(left, x);
+      right = Math.max(right, x);
+      top = Math.min(top, y);
+      bottom = Math.max(bottom, y);
+    }
+  }
+  if (right < 0) return null;
+
+  const cropped = document.createElement('canvas');
+  cropped.width = right - left + 1;
+  cropped.height = bottom - top + 1;
+  cropped.getContext('2d').drawImage(canvas, left, top, cropped.width, cropped.height, 0, 0, cropped.width, cropped.height);
+  return cropped.toDataURL();
 }
 
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -157,7 +205,7 @@ async function search(query) {
   try {
     // Espera pelo menos um pouco, para a animação dos pontos aparecer
     const [result] = await Promise.all([fetchPokemon(query), wait(600)]);
-    await preloadImage(result.pokemon.sprites.front_default);
+    await loadSprite(result.pokemon.sprites.front_default);
 
     // Pontos da moldura piscam juntos uma vez antes do resultado
     lamps.frame.classList.remove('is-searching');
@@ -223,22 +271,26 @@ function spriteFor(gender, shiny) {
   return shiny ? sprites.front_shiny : sprites.front_default;
 }
 
-function renderSprite() {
+async function renderSprite() {
   const url = spriteFor(state.gender, state.shiny);
+  lamps.shiny.classList.toggle('is-on', state.shiny);
+  lamps.shiny.setAttribute('aria-pressed', state.shiny);
+
+  const src = await loadSprite(url);
+  // Outra versão foi pedida enquanto esta carregava
+  if (!state.current || url !== spriteFor(state.gender, state.shiny)) return;
+
   screens.main.classList.remove('is-error');
   screens.main.replaceChildren();
 
-  if (url) {
+  if (src) {
     const image = document.createElement('img');
-    image.src = url;
+    image.src = src;
     image.alt = state.current.species.name;
     screens.main.append(image);
   } else {
     screens.main.textContent = 'SEM IMAGEM';
   }
-
-  lamps.shiny.classList.toggle('is-on', state.shiny);
-  lamps.shiny.setAttribute('aria-pressed', state.shiny);
 }
 
 // Cabeçalho da tela de informações: texto à esquerda e à direita
