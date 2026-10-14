@@ -51,7 +51,7 @@ let zoom = 1;
 
 // Maior zoom possível sem a Pokédex aberta sair da tela
 function getMaxZoom() {
-  const baseUnit = Math.min(innerWidth * .45, (innerHeight - 220) / 1.6, 420);   // mesmo cálculo do CSS
+  const baseUnit = Math.min(innerWidth * .45, (innerHeight - 190) / 1.6, 420);   // mesmo cálculo do CSS
   const fitUnit = Math.min(innerWidth * .95 / 2, (innerHeight - 100) / 1.6);
   return Math.max(1, fitUnit / baseUnit);
 }

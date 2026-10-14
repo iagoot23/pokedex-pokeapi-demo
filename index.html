@@ -12,11 +12,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600&family=VT323&display=swap" rel="stylesheet">
 
   <!-- Estilos da Pokédex (aumente o ?v= ao mudar CSS ou JS, para o navegador não usar a versão guardada) -->
-  <link rel="stylesheet" href="css/style.css?v=2">
+  <link rel="stylesheet" href="css/style.css?v=3">
 
   <!-- Scripts: interface.js (abrir/fechar, zoom e ajuda) e pokedex.js (integração com a PokeAPI) -->
-  <script src="js/interface.js?v=2" defer></script>
-  <script src="js/pokedex.js?v=2" defer></script>
+  <script src="js/interface.js?v=3" defer></script>
+  <script src="js/pokedex.js?v=3" defer></script>
 </head>
 <body>
   <!-- Pokébola (abre o guia do universo Pokémon) e botão de ajuda, nos cantos de cima -->
@@ -28,9 +28,9 @@
       <!-- Metade de baixo (branca, como a borda da lente) -->
       <path d="M4,50 A46,46 0 0 0 96,50 Z" fill="#f4f4f4"/>
       <!-- Contorno e faixa central -->
-      <circle cx="50" cy="50" r="46" fill="none" stroke="#7d0519" stroke-width="4"/>
-      <rect x="4" y="45" width="92" height="10" fill="#7d0519"/>
-      <circle cx="50" cy="50" r="17" fill="#f4f4f4" stroke="#7d0519" stroke-width="4"/>
+      <circle cx="50" cy="50" r="46" fill="none" stroke="#1d2226" stroke-width="4"/>
+      <rect x="4" y="45" width="92" height="10" fill="#1d2226"/>
+      <circle cx="50" cy="50" r="17" fill="#f4f4f4" stroke="#1d2226" stroke-width="4"/>
     </svg>
     <span class="lamp pokeball-center" aria-hidden="true"></span>
   </button>
@@ -185,7 +185,7 @@
               <button class="absolute lamp yellow-led" id="led-yellow" aria-label="Shiny" title="Shiny" aria-pressed="false"></button>
               <span class="absolute led-caption" aria-hidden="true">SHINY</span>
 
-              <!-- TELINHAS INFERIORES: evolução anterior e próxima evolução -->
+              <!-- TELINHAS INFERIORES: evolução anterior e próxima evolução (legendas embaixo) -->
               <span class="absolute display-caption display-caption--left" aria-hidden="true">EVOLUÇÃO ANTERIOR</span>
               <span class="absolute display-caption display-caption--right" aria-hidden="true">PRÓXIMA EVOLUÇÃO</span>
               <div class="absolute small-display small-display--left" id="small-display-left" title="Evolução anterior">---</div>
@@ -201,8 +201,8 @@
 
   <!-- Rodapé: autoria e direitos -->
   <footer class="site-footer">
-    <p>© 2026 <a href="https://iteixeira.dev" target="_blank" rel="noopener">iteixeira.dev</a> · Projeto de fã, sem fins lucrativos, feito com dados da <a href="https://pokeapi.co" target="_blank" rel="noopener">PokeAPI</a>.</p>
-    <p>Pokémon e todos os nomes, imagens e sons relacionados são marcas registradas e © 1995–2026 <a href="https://www.nintendo.com" target="_blank" rel="noopener">Nintendo</a>, <a href="https://www.creatures.co.jp" target="_blank" rel="noopener">Creatures Inc.</a> e <a href="https://www.gamefreak.co.jp" target="_blank" rel="noopener">GAME FREAK inc.</a> Este site não é afiliado nem endossado por essas empresas.</p>
+    <p>© 2026 <a href="https://iteixeira.dev" target="_blank" rel="noopener">iteixeira.dev</a> · Dados da <a href="https://pokeapi.co" target="_blank" rel="noopener">PokeAPI</a></p>
+    <p>Pokémon © 1995–2026 <a href="https://www.nintendo.com" target="_blank" rel="noopener">Nintendo</a>, <a href="https://www.creatures.co.jp" target="_blank" rel="noopener">Creatures Inc.</a> e <a href="https://www.gamefreak.co.jp" target="_blank" rel="noopener">GAME FREAK inc.</a> Projeto de fã, sem fins lucrativos e sem vínculo com essas empresas.</p>
   </footer>
 
   <!-- Janela de ajuda -->

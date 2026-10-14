@@ -11,10 +11,10 @@
 :root {
   /* Unidade base: todas as medidas da Pokédex são múltiplos dela.
      1 unidade = largura da Pokédex fechada (aberta, ela ocupa cerca de 2).
-     A altura desconta os botões do topo e o rodapé (220px).
+     A altura desconta os botões do topo e o rodapé (190px).
      --zoom é alterado pelo JavaScript (rodinha do mouse). */
   --zoom: 1;
-  --unit: calc(min(45vw, (100dvh - 220px) / 1.6, 420px) * var(--zoom));
+  --unit: calc(min(45vw, (100dvh - 190px) / 1.6, 420px) * var(--zoom));
 
   /* Espessuras usadas nos detalhes e na profundidade dos botões */
   --detail-line: calc(var(--unit) * .008);
@@ -796,24 +796,27 @@ button:focus-visible,
   font-size: 20px;
 }
 
-/* Rodapé com autoria e direitos */
+/* Rodapé com autoria e direitos: uma faixa baixa, separada por uma linha fina */
 .site-footer {
-  width: min(100%, calc(var(--unit) * 2) + 32px);
-  padding: 16px 16px 20px;
+  width: min(calc(100% - 32px), calc(var(--unit) * 2));
+  margin-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+  padding-top: 10px;
+  border-top: 1px solid color-mix(in srgb, var(--ink) 15%, transparent);
   color: var(--ink-soft);
-  font-size: 12px;
+  font-size: 11.5px;
   line-height: 1.5;
   text-align: center;
-}
-
-.site-footer p + p {
-  margin-top: 4px;
 }
 
 .site-footer a {
   color: var(--ink);
   font-weight: 600;
+  text-decoration-color: color-mix(in srgb, var(--ink) 35%, transparent);
   text-underline-offset: 2px;
+}
+
+.site-footer a:hover {
+  text-decoration-color: currentColor;
 }
 
 .help-dialog ol {
@@ -996,8 +999,8 @@ button:focus-visible,
   pointer-events: none;
 }
 
-.dpad-caption--top    { top: calc(var(--unit) * .705); }
-.dpad-caption--bottom { top: calc(var(--unit) * 1.015); }
+.dpad-caption--top    { top: calc(var(--unit) * .69); }
+.dpad-caption--bottom { top: calc(var(--unit) * 1.03); }
 
 /* Legenda do LED amarelo */
 .led-caption {
@@ -1008,9 +1011,9 @@ button:focus-visible,
   pointer-events: none;
 }
 
-/* Legendas das telinhas inferiores, logo acima de cada uma */
+/* Legendas das telinhas inferiores, logo abaixo de cada uma */
 .display-caption {
-  bottom: calc(var(--unit) * (1.005 - .64 - 3 * var(--gap) + .012));
+  top: calc(var(--unit) * (.74 + 3 * var(--gap) + .014));
   width: calc(var(--unit) * .35);
   text-align: center;
   white-space: nowrap;
