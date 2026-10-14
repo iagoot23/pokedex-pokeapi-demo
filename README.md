@@ -45,7 +45,7 @@ Cinco telas mostram conteúdo e sete lâmpadas mostram estado. Só uma delas, a 
 | Lâmpada amarela do topo | `.led--yellow` | O Pokémon atual é estágio 2. |
 | Lâmpada verde do topo | `.led--green` | O Pokémon atual é estágio 3. |
 | Pontos da moldura | `.frame-dot--left`, `.frame-dot--right` | Piscam alternados durante a busca; piscam juntos uma vez quando o resultado fica pronto. |
-| LED de energia | `.power-led` | Pisca a cada erro e quando a versão pedida não existe. |
+| LED de energia | `.power-led` | Pisca a cada erro e quando a versão pedida não existe, junto com um bipe de erro. |
 | Lâmpada shiny | `#led-yellow` (um `<button>` na tampa, ao lado do teclado) | Acesa enquanto a versão shiny é exibida (também é um botão, veja Controles). Não confundir com `.led--yellow`, a lâmpada de estágio do topo. |
 
 ## Controles
@@ -130,7 +130,7 @@ Uma busca sempre acontece do mesmo jeito, venha ela do Buscar ou das setas para 
 
 **Erros**
 
-Todo erro faz o `.power-led` piscar e mostra uma descrição curta em `#main-screen`. Casos: nome ou número não encontrado, sem conexão com a internet e API sem resposta.
+Todo erro faz o `.power-led` piscar, toca um bipe e mostra uma descrição curta em `#main-screen`. Casos: nome ou número não encontrado, sem conexão com a internet e API sem resposta.
 
 **Atenção:** algumas espécies não têm entrada com o nome simples em `/pokemon/` porque têm várias formas (`giratina`, `deoxys`, `shaymin`). `/pokemon-species/{nome}` sempre aceita o nome simples e lista as formas.
 

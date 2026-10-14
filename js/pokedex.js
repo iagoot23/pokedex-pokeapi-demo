@@ -317,6 +317,27 @@ function blinkPower() {
   lamps.power.classList.remove('is-blinking');
   void lamps.power.offsetWidth;   // reinicia a animação se já estiver piscando
   lamps.power.classList.add('is-blinking');
+  playErrorBeep();
+}
+
+// Bipe de erro: dois toques graves de onda quadrada, gerados pelo navegador
+let audioContext = null;
+
+function playErrorBeep() {
+  audioContext ??= new AudioContext();
+  const start = audioContext.currentTime;
+
+  [0, .16].forEach((delay) => {
+    const oscillator = audioContext.createOscillator();
+    const volume = audioContext.createGain();
+    oscillator.type = 'square';
+    oscillator.frequency.value = 220;
+    volume.gain.setValueAtTime(.08, start + delay);
+    volume.gain.exponentialRampToValueAtTime(.001, start + delay + .12);
+    oscillator.connect(volume).connect(audioContext.destination);
+    oscillator.start(start + delay);
+    oscillator.stop(start + delay + .12);
+  });
 }
 
 lamps.power.addEventListener('animationend', () => lamps.power.classList.remove('is-blinking'));
