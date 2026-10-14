@@ -1,7 +1,8 @@
 /* =========================================================
    POKÉDEX - INTERFACE
    Controla apenas o comportamento da tela:
-   abrir/fechar a Pokédex, zoom com o scroll do mouse e janela de ajuda.
+   abrir/fechar a Pokédex, zoom com o scroll do mouse, janela de ajuda
+   e o guia do universo Pokémon (aberto pela Pokébola).
    O código da PokeAPI fica no arquivo pokedex.js.
    ========================================================= */
 
@@ -12,7 +13,6 @@
 const pokedex = document.getElementById('pokedex');
 const coverFront = document.getElementById('cover-front');
 const lens = document.getElementById('lens');
-const hint = document.getElementById('hint');
 
 function setPokedexOpen(isOpen) {
   pokedex.classList.toggle('is-open', isOpen);
@@ -21,10 +21,6 @@ function setPokedexOpen(isOpen) {
   // Só o elemento visível pode receber foco pelo teclado
   coverFront.tabIndex = isOpen ? -1 : 0;
   lens.tabIndex = isOpen ? 0 : -1;
-
-  hint.textContent = isOpen
-    ? 'Clique na lente azul para fechar a Pokédex'
-    : 'Clique na Pokédex acima para abri-la';
 }
 
 coverFront.addEventListener('click', () => setPokedexOpen(true));
@@ -55,8 +51,8 @@ let zoom = 1;
 
 // Maior zoom possível sem a Pokédex aberta sair da tela
 function getMaxZoom() {
-  const baseUnit = Math.min(innerWidth * .42, innerHeight * .30, 280);   // mesmo cálculo do CSS
-  const fitUnit = Math.min(innerWidth * .95 / 2, innerHeight * .75 / 1.6);
+  const baseUnit = Math.min(innerWidth * .45, (innerHeight - 220) / 1.6, 420);   // mesmo cálculo do CSS
+  const fitUnit = Math.min(innerWidth * .95 / 2, (innerHeight - 100) / 1.6);
   return Math.max(1, fitUnit / baseUnit);
 }
 
@@ -81,3 +77,38 @@ const helpDialog = document.getElementById('help-dialog');
 
 document.getElementById('help-btn').addEventListener('click', () => helpDialog.showModal());
 document.getElementById('help-close').addEventListener('click', () => helpDialog.close());
+
+
+/* ---------------------------------------------------------
+   4. GUIA DO UNIVERSO POKÉMON
+   A Pokébola balança, acende e então o guia abre.
+   --------------------------------------------------------- */
+const pokeball = document.getElementById('pokeball-btn');
+const universeDialog = document.getElementById('universe-dialog');
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+
+pokeball.addEventListener('click', () => {
+  if (pokeball.classList.contains('is-opening')) return;
+
+  if (reducedMotion.matches) {
+    universeDialog.showModal();
+    return;
+  }
+  pokeball.classList.add('is-opening');
+});
+
+// A última animação da Pokébola é a que a faz sumir: aí o guia abre
+pokeball.addEventListener('animationend', (event) => {
+  if (event.animationName === 'pokeball-open') {
+    universeDialog.showModal();
+  }
+});
+
+// Ao fechar o guia, a Pokébola volta ao normal
+universeDialog.addEventListener('close', () => pokeball.classList.remove('is-opening'));
+document.getElementById('universe-close').addEventListener('click', () => universeDialog.close());
+
+// Clicar fora do guia (no fundo escuro) também fecha
+universeDialog.addEventListener('click', (event) => {
+  if (event.target === universeDialog) universeDialog.close();
+});

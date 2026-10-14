@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Pokédex</title>
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
 
   <!-- Fontes do Google: Rubik (textos da página) e VT323 (textos das telas) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,6 +19,24 @@
   <script src="js/pokedex.js" defer></script>
 </head>
 <body>
+  <!-- Pokébola (abre o guia do universo Pokémon) e botão de ajuda, nos cantos de cima -->
+  <button class="pokeball-btn" id="pokeball-btn" aria-label="O universo Pokémon" title="O universo Pokémon" aria-haspopup="dialog">
+    <svg class="svg-shape" viewBox="0 0 100 100" aria-hidden="true">
+      <!-- Metade de cima (vermelha) com linha interna, como o corpo da Pokédex -->
+      <path d="M4,50 A46,46 0 0 1 96,50 Z" fill="#dd092f"/>
+      <path d="M11,44 A40,40 0 0 1 89,44" fill="none" stroke="#b5072a" stroke-width="3"/>
+      <!-- Metade de baixo (branca, como a borda da lente) -->
+      <path d="M4,50 A46,46 0 0 0 96,50 Z" fill="#f4f4f4"/>
+      <!-- Contorno e faixa central -->
+      <circle cx="50" cy="50" r="46" fill="none" stroke="#7d0519" stroke-width="4"/>
+      <rect x="4" y="45" width="92" height="10" fill="#7d0519"/>
+      <circle cx="50" cy="50" r="17" fill="#f4f4f4" stroke="#7d0519" stroke-width="4"/>
+    </svg>
+    <span class="lamp pokeball-center" aria-hidden="true"></span>
+  </button>
+
+  <button class="help-btn" id="help-btn" aria-label="Como usar" title="Como usar" aria-haspopup="dialog">?</button>
+
   <main>
     <div class="stage">
       <div class="pokedex" id="pokedex">
@@ -111,7 +130,7 @@
         <div class="pokedex-cover">
 
           <!-- Lado de fora da tampa (visível com a Pokédex fechada) -->
-          <div class="cover-face cover-face--front" id="cover-front" role="button" tabindex="0" aria-label="Abrir a Pokédex" aria-expanded="false">
+          <div class="cover-face cover-face--front" id="cover-front" role="button" tabindex="0" aria-label="Abrir a Pokédex" title="Abrir a Pokédex" aria-expanded="false">
             <svg class="svg-shape" viewBox="0 0 92 148" preserveAspectRatio="none" aria-hidden="true">
               <path d="M0,26 Q0,23 3,23 L36,23 C50,23 52,0 66,0 L92,0 L92,148 L7,148 Q0,148 0,141 Z"
                     fill="#dd092f" stroke="#7d0519" stroke-width="1.2"/>
@@ -166,9 +185,11 @@
               <button class="absolute lamp yellow-led" id="led-yellow" aria-label="Shiny" title="Shiny" aria-pressed="false"></button>
               <span class="absolute led-caption" aria-hidden="true">SHINY</span>
 
-              <!-- TELINHAS INFERIORES: use para informações curtas -->
-              <div class="absolute small-display small-display--left" id="small-display-left">---</div>
-              <div class="absolute small-display small-display--right" id="small-display-right">---</div>
+              <!-- TELINHAS INFERIORES: evolução anterior e próxima evolução -->
+              <span class="absolute display-caption display-caption--left" aria-hidden="true">EVOLUÇÃO ANTERIOR</span>
+              <span class="absolute display-caption display-caption--right" aria-hidden="true">PRÓXIMA EVOLUÇÃO</span>
+              <div class="absolute small-display small-display--left" id="small-display-left" title="Evolução anterior">---</div>
+              <div class="absolute small-display small-display--right" id="small-display-right" title="Próxima evolução">---</div>
 
             </div>
           </div>
@@ -176,28 +197,113 @@
 
       </div>
     </div>
-
-    <!-- Dica e botão de ajuda -->
-    <div class="help-bar">
-      <p class="hint" id="hint">Clique na Pokédex acima para abri-la</p>
-      <button class="help-btn" id="help-btn" aria-label="Como usar">?</button>
-    </div>
   </main>
+
+  <!-- Rodapé: autoria e direitos -->
+  <footer class="site-footer">
+    <p>© 2026 <a href="https://iteixeira.dev" target="_blank" rel="noopener">iteixeira.dev</a> · Projeto de fã, sem fins lucrativos, feito com dados da <a href="https://pokeapi.co" target="_blank" rel="noopener">PokeAPI</a>.</p>
+    <p>Pokémon e todos os nomes, imagens e sons relacionados são marcas registradas e © 1995–2026 <a href="https://www.nintendo.com" target="_blank" rel="noopener">Nintendo</a>, <a href="https://www.creatures.co.jp" target="_blank" rel="noopener">Creatures Inc.</a> e <a href="https://www.gamefreak.co.jp" target="_blank" rel="noopener">GAME FREAK inc.</a> Este site não é afiliado nem endossado por essas empresas.</p>
+  </footer>
 
   <!-- Janela de ajuda -->
   <dialog class="help-dialog" id="help-dialog">
     <h2>Como usar</h2>
     <ol>
-      <li>Clique na Pokédex para abri-la.</li>
+      <li>Clique na Pokédex fechada para abri-la.</li>
       <li>Clique na lente azul para fechá-la de novo.</li>
       <li>Role a rodinha do mouse sobre a Pokédex para aumentá-la ou diminuí-la.</li>
       <li>Digite um nome nas teclas azuis como num celular antigo (aperte várias vezes para trocar a letra) e aperte BUSCAR.</li>
       <li>ABC / 123 alterna entre letras e números; HÍFEN digita “-”; APAGAR apaga um caractere.</li>
       <li>▲▼ trocam de Pokémon pelo número; ◀▶ trocam a página de informações.</li>
       <li>FÊMEA, MACHO e SHINY mudam a imagem; GRITO toca o som do Pokémon.</li>
-      <li>As três luzes do topo mostram o estágio da evolução; todas acesas indicam uma evolução especial.</li>
+      <li>As três luzes do topo mostram o estágio da evolução; todas acesas indicam uma evolução especial. As telinhas de baixo mostram a evolução anterior e a próxima.</li>
+      <li>Clique na Pokébola, no canto de cima, para conhecer o universo Pokémon.</li>
     </ol>
     <button id="help-close">Entendi</button>
+  </dialog>
+
+  <!-- Guia do universo Pokémon (aberto pela Pokébola) -->
+  <dialog class="universe-dialog" id="universe-dialog" aria-labelledby="universe-title">
+    <header class="universe-head">
+      <h2 id="universe-title">O universo Pokémon</h2>
+      <button class="universe-close" id="universe-close" aria-label="Fechar">✕</button>
+    </header>
+
+    <div class="universe-body">
+      <p class="universe-intro">Um guia rápido para quem nunca jogou: o que é Pokémon, para que serve uma Pokédex e onde cada informação aparece nesta aqui.</p>
+
+      <div class="universe-grid">
+        <section class="universe-card">
+          <h3>O que é Pokémon</h3>
+          <p>Uma série japonesa de jogos criada pela GAME FREAK e lançada em 1996 com <i>Pocket Monsters Red</i> e <i>Green</i>. Virou anime, filmes e jogo de cartas. Nos jogos, treinadores capturam criaturas, os Pokémon, e as treinam para batalhar. Já são mais de mil espécies. A palavra serve para singular e plural.</p>
+        </section>
+
+        <section class="universe-card">
+          <h3>O que é a Pokédex</h3>
+          <p>Uma enciclopédia eletrônica de bolso que o Professor Carvalho entrega ao treinador no começo da jornada. Ela registra cada espécie que o treinador encontra, e completá-la é um dos grandes objetivos dos jogos.</p>
+          <p class="universe-where"><b>Nesta Pokédex:</b> clique nela para abrir e na lente azul para fechar.</p>
+        </section>
+
+        <section class="universe-card universe-card--wide">
+          <h3>Este modelo: 1ª geração, Kanto</h3>
+          <p>O desenho reproduz a Pokédex da primeira geração, da região de Kanto, dos jogos <i>Red</i>, <i>Blue</i> e <i>Yellow</i> e da primeira temporada do anime: vermelha, abre como um livro e tem a lente azul e as três luzes no topo. Naquela época eram 151 Pokémon, do #001 Bulbasaur ao #151 Mew. Esta réplica busca os dados na PokeAPI, então mostra as espécies de todas as gerações.</p>
+        </section>
+
+        <section class="universe-card">
+          <h3>Número e espécie</h3>
+          <p>Cada espécie tem um número na Pokédex Nacional: #001 Bulbasaur, #025 Pikachu. Algumas têm várias formas, como as variantes regionais.</p>
+          <p class="universe-where"><b>Nesta Pokédex:</b> o visor verde mostra o número; ▲▼ passam de um em um, e o teclado busca por nome ou número.</p>
+        </section>
+
+        <section class="universe-card">
+          <h3>Tipos</h3>
+          <p>Elementos como Fogo, Água e Planta. São 18 tipos, e cada Pokémon tem um ou dois. Eles definem forças e fraquezas: Água vence Fogo, que vence Planta, que vence Água.</p>
+          <p class="universe-where"><b>Nesta Pokédex:</b> página 2 da tela de informações (◀▶).</p>
+        </section>
+
+        <section class="universe-card">
+          <h3>Atributos (stats)</h3>
+          <p>Seis números base medem um Pokémon: HP (vida), Ataque, Defesa, Ataque Especial, Defesa Especial e Velocidade. Quanto maior, mais forte ele é naquele quesito.</p>
+          <p class="universe-where"><b>Nesta Pokédex:</b> página 3 da tela de informações.</p>
+        </section>
+
+        <section class="universe-card">
+          <h3>Habilidades, altura e peso</h3>
+          <p>Habilidades são poderes passivos, criados na 3ª geração; alguns Pokémon têm uma rara habilidade oculta. Altura e peso completam a ficha.</p>
+          <p class="universe-where"><b>Nesta Pokédex:</b> páginas 4 e 5 da tela de informações.</p>
+        </section>
+
+        <section class="universe-card">
+          <h3>Gênero</h3>
+          <p>O gênero chegou na 2ª geração; em Kanto, só os Nidoran ♀ e ♂ eram separados, como espécies diferentes. Hoje há espécies só macho (Tauros), só fêmea (Chansey) e sem gênero (Magnemite). Desde a 4ª geração, algumas fêmeas têm aparência própria: a cauda da Pikachu fêmea termina em coração.</p>
+          <p class="universe-where"><b>Nesta Pokédex:</b> botões FÊMEA e MACHO; o LED de energia pisca se a versão não existir.</p>
+        </section>
+
+        <section class="universe-card">
+          <h3>Shiny</h3>
+          <p>Uma versão rara, com cores diferentes, também da 2ª geração. A chance de encontrar um era de 1 em 8.192 e passou a 1 em 4.096 na 6ª geração.</p>
+          <p class="universe-where"><b>Nesta Pokédex:</b> a luz amarela SHINY, ao lado do teclado; funciona junto com o gênero.</p>
+        </section>
+
+        <section class="universe-card universe-card--wide">
+          <h3>Evolução</h3>
+          <p>Muitos Pokémon se transformam numa espécie mais forte: Charmander → Charmeleon → Charizard. Cada um ocupa um estágio (1, 2 ou 3) da cadeia de evolução. O gatilho costuma ser atingir um nível, mas também pode ser usar uma pedra, ser trocado com outro jogador, amizade ou horário do dia. Algumas espécies se ramificam: Eevee pode evoluir para 8 Pokémon diferentes.</p>
+          <p class="universe-where"><b>Nesta Pokédex:</b> as três luzes do topo acendem conforme o estágio (vermelha, amarela, verde), e todas juntas indicam uma evolução especial, que não depende só de nível. As telinhas de baixo mostram a evolução anterior e a próxima, ou "MAIS QUE UM" quando há ramificação.</p>
+        </section>
+
+        <section class="universe-card">
+          <h3>Grito</h3>
+          <p>Cada espécie tem um som próprio, o grito (<i>cry</i>), que toca quando ela aparece nos jogos.</p>
+          <p class="universe-where"><b>Nesta Pokédex:</b> botão redondo GRITO.</p>
+        </section>
+
+        <section class="universe-card">
+          <h3>De onde vêm os dados</h3>
+          <p>Da <a href="https://pokeapi.co" target="_blank" rel="noopener">PokeAPI</a>, uma API gratuita e aberta. Ela não tem descrições em português, então a descrição aparece em inglês.</p>
+          <p class="universe-where"><b>Nesta Pokédex:</b> os pontos da moldura piscam enquanto os dados chegam.</p>
+        </section>
+      </div>
+    </div>
   </dialog>
 </body>
 </html>

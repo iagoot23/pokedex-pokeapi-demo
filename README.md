@@ -25,8 +25,10 @@ Esta especificação define o que cada botão, tela e lâmpada da Pokédex faz d
 | --- | --- | --- |
 | `index.html` | Todas as telas, botões e lâmpadas | Pronto |
 | `css/style.css` | A aparência | Pronto |
-| `js/interface.js` | Abrir/fechar, zoom com a rodinha do mouse, janela de ajuda | Pronto |
+| `js/interface.js` | Abrir/fechar, zoom com a rodinha do mouse, janela de ajuda e guia do universo Pokémon | Pronto |
 | `js/pokedex.js` | Tudo o que esta especificação descreve | Pronto |
+
+Nos cantos de cima ficam dois botões fixos: a Pokébola (`#pokeball-btn`), que balança, acende e abre um guia do universo Pokémon (`#universe-dialog`), e o botão de ajuda (`#help-btn`). O guia explica o que é Pokémon e a Pokédex, o modelo da 1ª geração (Kanto) e mostra onde cada dado (tipos, atributos, gênero, shiny, evolução) aparece nesta Pokédex.
 
 Para rodar, abra o `index.html` no navegador; não há etapa de build. Os dois scripts já são carregados com `defer`. Conforme as funcionalidades forem criadas, adicione um passo para cada uma na janela de ajuda (`#help-dialog` no `index.html`).
 

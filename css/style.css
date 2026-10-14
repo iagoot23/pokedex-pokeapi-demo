@@ -10,10 +10,11 @@
    --------------------------------------------------------- */
 :root {
   /* Unidade base: todas as medidas da Pokédex são múltiplos dela.
-     1 unidade = largura da Pokédex fechada.
+     1 unidade = largura da Pokédex fechada (aberta, ela ocupa cerca de 2).
+     A altura desconta os botões do topo e o rodapé (220px).
      --zoom é alterado pelo JavaScript (rodinha do mouse). */
   --zoom: 1;
-  --unit: calc(min(42vw, 30vh, 280px) * var(--zoom));
+  --unit: calc(min(45vw, (100dvh - 220px) / 1.6, 420px) * var(--zoom));
 
   /* Espessuras usadas nos detalhes e na profundidade dos botões */
   --detail-line: calc(var(--unit) * .008);
@@ -78,13 +79,15 @@
   margin: 0;
 }
 
-html,
-body {
+html {
   height: 100%;
 }
 
+/* Pokédex centralizada e rodapé sempre no fim da página */
 body {
+  min-height: 100%;
   display: grid;
+  grid-template-rows: 1fr auto;
   place-items: center;
   overflow-x: hidden;
   background: var(--page);
@@ -92,12 +95,12 @@ body {
   font-family: "Rubik", system-ui, sans-serif;
 }
 
+/* Espaço em cima para os botões fixos dos cantos */
 main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: calc(var(--unit) * .25);
-  padding: 24px 16px;
+  padding: 84px 16px 16px;
 }
 
 /* Remove o visual padrão dos botões do navegador */
@@ -687,28 +690,19 @@ button:focus-visible,
 
 
 /* ---------------------------------------------------------
-   12. DICA E JANELA DE AJUDA
+   12. BOTÕES DOS CANTOS E JANELA DE AJUDA
    --------------------------------------------------------- */
-.help-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  width: min(100%, calc(var(--unit) * 2));
-}
 
-.hint {
-  flex: 1;
-  padding: 12px 16px;
-  border: 2px solid var(--ink);
-  border-radius: 10px;
-  font-size: clamp(14px, 2.2vw, 17px);
-  line-height: 1.4;
-  text-align: center;
+/* Pokébola no canto esquerdo e ajuda no canto direito */
+.pokeball-btn,
+.help-btn {
+  position: fixed;
+  z-index: 10;
+  top: calc(16px + env(safe-area-inset-top, 0px));
 }
 
 .help-btn {
-  flex: none;
+  right: 16px;
   width: 52px;
   height: 52px;
   border-radius: 50%;
@@ -717,6 +711,70 @@ button:focus-visible,
   color: var(--ink);
   font: 600 24px/1 "Rubik", system-ui, sans-serif;
   cursor: pointer;
+}
+
+/* Pokébola: mesmos tons, contornos e brilho da Pokédex */
+.pokeball-btn {
+  left: 16px;
+  width: 52px;
+  height: 52px;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  filter: drop-shadow(0 2px 2px rgb(0 0 0 / .3));
+  cursor: pointer;
+  transition: transform .15s;
+}
+
+.pokeball-btn:hover {
+  transform: scale(1.08);
+}
+
+.pokeball-btn:focus-visible,
+.help-btn:focus-visible {
+  outline: 3px solid var(--lens);
+  outline-offset: 3px;
+}
+
+/* Botão do centro: uma luz branca, como os LEDs */
+.pokeball-center {
+  position: absolute;
+  left: 39%;
+  top: 39%;
+  width: 22%;
+  height: 22%;
+  --color: #f4f4f4;
+  transition: box-shadow .2s;
+}
+
+/* Animação ao clicar: balança três vezes, o botão acende e a guia abre */
+.pokeball-btn.is-opening {
+  animation: pokeball-wobble .9s ease-in-out, pokeball-open .3s ease-in .9s forwards;
+  transform-origin: 50% 90%;
+}
+
+.pokeball-btn.is-opening .pokeball-center {
+  animation: pokeball-glow .3s ease-out .75s forwards;
+}
+
+@keyframes pokeball-wobble {
+  0%, 100% { transform: rotate(0); }
+  15% { transform: rotate(-22deg); }
+  30% { transform: rotate(18deg); }
+  45% { transform: rotate(-14deg); }
+  60% { transform: rotate(10deg); }
+  75% { transform: rotate(-5deg); }
+}
+
+@keyframes pokeball-glow {
+  to {
+    --color: #fff7a8;
+    box-shadow: 0 0 10px 4px #fff7a8, 0 0 22px 8px rgb(255 247 168 / .6);
+  }
+}
+
+@keyframes pokeball-open {
+  to { transform: scale(1.35); opacity: 0; }
 }
 
 .help-dialog {
@@ -738,13 +796,33 @@ button:focus-visible,
   font-size: 20px;
 }
 
+/* Rodapé com autoria e direitos */
+.site-footer {
+  width: min(100%, calc(var(--unit) * 2) + 32px);
+  padding: 16px 16px 20px;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.site-footer p + p {
+  margin-top: 4px;
+}
+
+.site-footer a {
+  color: var(--ink);
+  font-weight: 600;
+  text-underline-offset: 2px;
+}
+
 .help-dialog ol {
   margin-bottom: 16px;
   padding-left: 1.2em;
   color: var(--ink-soft);
 }
 
-.help-dialog button {
+.help-dialog > button {
   padding: 8px 18px;
   border: 0;
   border-radius: 99px;
@@ -752,6 +830,127 @@ button:focus-visible,
   color: #fff;
   font: 600 15px "Rubik", system-ui, sans-serif;
   cursor: pointer;
+}
+
+
+/* Guia do universo Pokémon */
+.universe-dialog {
+  width: min(760px, calc(100vw - 32px));
+  max-width: none;
+  max-height: min(86dvh, 900px);
+  margin: auto;
+  padding: 0;
+  overflow: hidden;
+  border: 3px solid var(--red-line);
+  border-radius: 16px;
+  background: var(--page);
+  color: var(--ink);
+  line-height: 1.5;
+}
+
+.universe-dialog[open] {
+  display: flex;
+  flex-direction: column;
+  animation: universe-in .35s cubic-bezier(.2, .9, .3, 1.2);
+  transform-origin: 0 0;
+}
+
+.universe-dialog::backdrop {
+  background: rgb(0 0 0 / .55);
+}
+
+@keyframes universe-in {
+  from { transform: translate(-30vw, -30vh) scale(.1); opacity: 0; }
+}
+
+/* Cabeçalho vermelho, como o corpo da Pokédex */
+.universe-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 18px;
+  border-bottom: 3px solid var(--red-line);
+  background: var(--red);
+  color: #fff;
+}
+
+.universe-head h2 {
+  font-size: 20px;
+  text-shadow: 0 1px 0 rgb(0 0 0 / .35);
+}
+
+.universe-close {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border: 2px solid var(--red-line);
+  border-radius: 50%;
+  background: #f4f4f4;
+  color: var(--red-line);
+  font: 600 16px/1 "Rubik", system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.universe-body {
+  padding: 18px;
+  overflow-y: auto;
+  scrollbar-color: color-mix(in srgb, var(--ink) 35%, transparent) transparent;
+}
+
+.universe-intro {
+  margin-bottom: 14px;
+  color: var(--ink-soft);
+}
+
+.universe-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.universe-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 16px;
+  border: 2px solid color-mix(in srgb, var(--ink) 18%, transparent);
+  border-radius: 12px;
+  font-size: 15px;
+}
+
+.universe-card--wide {
+  grid-column: 1 / -1;
+}
+
+.universe-card h3 {
+  font-size: 16px;
+}
+
+.universe-card a {
+  color: inherit;
+  font-weight: 600;
+}
+
+/* "Nesta Pokédex": no estilo das telas pretas */
+.universe-where {
+  margin-top: auto;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: var(--screen);
+  color: var(--screen-text);
+  font: 19px/1.15 "VT323", ui-monospace, monospace;
+}
+
+.universe-where b {
+  color: #7fb58b;
+  font-weight: 400;
+}
+
+@media (max-width: 600px) {
+  .universe-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 
@@ -774,7 +973,8 @@ button:focus-visible,
 .btn-label,
 .labeled::after,
 .dpad-caption,
-.led-caption {
+.led-caption,
+.display-caption {
   color: #fff;
   font: 600 calc(var(--unit) * .028)/1.15 "Rubik", system-ui, sans-serif;
   text-shadow: 0 1px 0 rgb(0 0 0 / .35);
@@ -807,6 +1007,18 @@ button:focus-visible,
   text-align: center;
   pointer-events: none;
 }
+
+/* Legendas das telinhas inferiores, logo acima de cada uma */
+.display-caption {
+  bottom: calc(var(--unit) * (1.005 - .64 - 3 * var(--gap) + .012));
+  width: calc(var(--unit) * .35);
+  text-align: center;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.display-caption--left  { left: 0; }
+.display-caption--right { right: 0; }
 
 /* Setas do direcional */
 .dpad-btn {
@@ -983,7 +1195,8 @@ button:focus-visible,
   }
 
   .typing-pending,
-  .typing-cursor {
+  .typing-cursor,
+  .universe-dialog[open] {
     animation: none;
   }
 }
