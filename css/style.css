@@ -759,7 +759,8 @@ button:focus-visible,
    13. RÓTULOS DOS BOTÕES
    --------------------------------------------------------- */
 
-/* Texto acima do botão, vindo do atributo data-label */
+/* Texto acima do botão: vem do atributo data-label ou de um .btn-label dentro dele */
+.btn-label,
 .labeled::after {
   content: attr(data-label);
   position: absolute;
@@ -770,6 +771,7 @@ button:focus-visible,
   pointer-events: none;
 }
 
+.btn-label,
 .labeled::after,
 .dpad-caption,
 .led-caption {
@@ -778,14 +780,24 @@ button:focus-visible,
   text-shadow: 0 1px 0 rgb(0 0 0 / .35);
 }
 
-/* Legenda do direcional */
+/* Símbolos de fêmea e macho, maiores que o texto */
+.gender-symbol {
+  font-size: 2.2em;
+  line-height: 0;
+  vertical-align: -.18em;
+}
+
+/* Legendas do direcional: uma acima e outra abaixo */
 .dpad-caption {
   right: 0;
-  top: calc(var(--unit) * .675);
   width: calc(var(--unit) * .26);
   text-align: center;
+  white-space: nowrap;
   pointer-events: none;
 }
+
+.dpad-caption--top    { top: calc(var(--unit) * .705); }
+.dpad-caption--bottom { top: calc(var(--unit) * 1.015); }
 
 /* Legenda do LED amarelo */
 .led-caption {

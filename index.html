@@ -86,20 +86,21 @@
 
             <!-- Botões abaixo da tela -->
             <button class="absolute btn round-btn labeled" id="btn-round" aria-label="Tocar o grito" title="Tocar o grito" data-label="GRITO"></button>
-            <button class="absolute btn pill-btn pill-btn--red labeled" id="btn-red" aria-label="Versão fêmea" title="Versão fêmea" data-label="FÊMEA ♀"></button>
-            <button class="absolute btn pill-btn pill-btn--blue labeled" id="btn-blue" aria-label="Versão macho" title="Versão macho" data-label="MACHO ♂"></button>
+            <button class="absolute btn pill-btn pill-btn--red" id="btn-red" aria-label="Versão fêmea" title="Versão fêmea"><span class="btn-label" aria-hidden="true">FÊMEA <span class="gender-symbol">♀</span></span></button>
+            <button class="absolute btn pill-btn pill-btn--blue" id="btn-blue" aria-label="Versão macho" title="Versão macho"><span class="btn-label" aria-hidden="true">MACHO <span class="gender-symbol">♂</span></span></button>
 
             <!-- VISOR VERDE: mostre aqui o número do Pokémon -->
             <div class="absolute number-display" id="number-display">#000</div>
 
             <!-- Direcional (D-pad) -->
-            <p class="absolute dpad-caption" aria-hidden="true">▲▼ POKÉMON<br>◀▶ PÁGINA</p>
+            <p class="absolute dpad-caption dpad-caption--top" aria-hidden="true">▲▼ POKÉMON</p>
             <div class="absolute dpad">
               <button class="dpad-btn dpad-btn--up" id="btn-up" aria-label="Próximo Pokémon" title="Próximo Pokémon">▲</button>
               <button class="dpad-btn dpad-btn--down" id="btn-down" aria-label="Pokémon anterior" title="Pokémon anterior">▼</button>
               <button class="dpad-btn dpad-btn--left" id="btn-left" aria-label="Página anterior" title="Página anterior">◀</button>
               <button class="dpad-btn dpad-btn--right" id="btn-right" aria-label="Próxima página" title="Próxima página">▶</button>
             </div>
+            <p class="absolute dpad-caption dpad-caption--bottom" aria-hidden="true">◀▶ PÁGINA</p>
 
           </div>
         </div>
